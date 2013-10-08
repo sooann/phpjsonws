@@ -6,7 +6,7 @@
  */
 
 require 'functions.php';
-//require 'includes/Command.php';
+require 'includes/Command.php';
 
 date_default_timezone_set('Asia/Singapore'); 
 
