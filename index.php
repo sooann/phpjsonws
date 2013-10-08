@@ -24,7 +24,7 @@
     
     $app->post("/:command", 
         function ($command) use ($app) {
-            echo "Running command: $command <br />";
+            //echo "Running command: $command <br />";
             $cmd = new Command($command);
             $cmd->setArguement($_POST["query"]);
             $cmd->execute();
