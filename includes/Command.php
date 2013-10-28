@@ -108,7 +108,7 @@ class Command {
                 if (!SQLWrapper::showTables(substr($this->name, 1))) {
                     die("Command: table '".substr($this->name, 1)."' is not found");
                 } else {
-                    require 'class/databasecommand.php';
+                    require '../class/databasecommand.php';
                     
                     switch (substr($this->name,0,1)) {
                         case "+":
