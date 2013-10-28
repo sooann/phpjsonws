@@ -26,6 +26,8 @@ class SQLWrapper {
     private $hasreference=false;
     private $refcolumn;
     
+    private $logging=false;
+    
     public function __construct($table) {
         $this->table = $table;
         $this->loadTable();
@@ -294,12 +296,16 @@ class SQLWrapper {
             } else {
                 $result = mysql_affected_rows();
             }
-            $this->logSQL();
+            if ($this->logging) {
+                $this->logSQL();
+            }
             return $result;
         } else {
             $this->sqlerror = mysql_error();
-            $this->logSQL();
-            $this->logSQLError();
+            if ($this->logging) {
+                $this->logSQL();
+                $this->logSQLError();
+            }
             die ("Query: [$this->sql];<br />$this->sqlerror");
             return $result;
         }
