@@ -10,8 +10,9 @@ class SQLWrapper {
     
     private static $dbwhitelist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-';
     private $NumberDatatypes = array("BIT","TINYINY","BOOL","BOOLEAN","SMALLINT","INT","INTEGER","BIGINT","DECIMAL","DEC","FLOAT","DOUBLE");
-    private $DateDatetypes = array("DATE","DATETIME","TIMESTAMP","TIME");
-    private $StringDatatypes = array("CHAR","NCHAR","VARCHAR","NVARCHAR","BINARY","VARBINARY","TINYBLOB","TINYTEXT","BLOB","TEXT","MEDIUMBLOB","MEDIUMTEXT","LONGBLOB","LONGTEXT","ENUM","SET");
+    private $DateDatatypes = array("DATE","DATETIME","TIMESTAMP","TIME");
+    private $StringDatatypes = array("CHAR","NCHAR","VARCHAR","NVARCHAR","BINARY","VARBINARY","TINYTEXT","TEXT","MEDIUMTEXT","LONGTEXT","ENUM","SET");
+    private $BlobDatatypes = array("TINYBLOB","BLOB","MEDIUMBLOB","LONGBLOB");
     
     private $param = array();
     private $table;
@@ -105,10 +106,12 @@ class SQLWrapper {
                     //check data conversion matching
                     if (array_search(strtoupper(preg_replace('/\(.*\)/','',$this->columns[$i]['Type'])),$this->NumberDatatypes)!==false) {
                         $datatype="int";
-                    } elseif (array_search(strtoupper(preg_replace('/\(.*\)/','',$this->columns[$i]['Type'])),$this->DateDatetypes)!==false) {
+                    } elseif (array_search(strtoupper(preg_replace('/\(.*\)/','',$this->columns[$i]['Type'])),$this->DateDatatypes)!==false) {
                         $datatype="date";
                     } elseif (array_search(strtoupper(preg_replace('/\(.*\)/','',$this->columns[$i]['Type'])),$this->StringDatatypes)!==false) {
                         $datatype="text";
+                    } elseif (array_search(strtoupper(preg_replace('/\(.*\)/','',$this->columns[$i]['Type'])),$this->BlobDatatypes)!==false) {
+                        $datatype="blob";
                     } else {
                         die("unable to find data type for parameter $column.");
                     }
@@ -272,6 +275,8 @@ class SQLWrapper {
                 return "'".escapesql($value)."'";
             } elseif ($datatype=="int" || $datatype=="float") {
                 return escapesql($value);
+            } elseif ($datatype=="blob") {
+                return "x'".escapesql($value)."'";
             }
         } else {
             return "NULL";
