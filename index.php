@@ -27,6 +27,13 @@
             //echo "Running command: $command <br />";
             $cmd = new Command($command);
             $cmd->setArguement($_POST["query"]);
+            
+            //get options
+            $options = json_decode($_POST["option"],true);
+            foreach ($options as $key=>$value) {
+                $cmd->option($key, $value);
+            }
+            
             $cmd->execute();
         }
     );
