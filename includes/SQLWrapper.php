@@ -276,7 +276,7 @@ class SQLWrapper {
             } elseif ($datatype=="int" || $datatype=="float") {
                 return escapesql($value);
             } elseif ($datatype=="blob") {
-                return "x'".escapesql($value)."'";
+                return "x'".escapesql(strtoupper($value))."'";
             }
         } else {
             return "NULL";
