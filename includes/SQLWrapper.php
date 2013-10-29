@@ -259,15 +259,18 @@ class SQLWrapper {
             die("Cannot update table without condition");
         }
     }
+    
     private function logInsertUpdateDelete ($type,$newid=NULL,$condition=null) {
         //prevent endless loop
-        if (strcasecmp($this->table,"SYS_LogInsertUpdateDelete")!=0) {
-            $log = new SQLWrapper("SYS_LogInsertUpdateDelete");
-            $log->addparam("tablename", $this->table);
-            $log->addparam("updatetype", $type);
-            $log->addparam("newid", $newid);
-            $log->addparam("wherecondition", $condition);
-            $log->insert();
+        if ($this->logging) {
+            if (strcasecmp($this->table,"SYS_LogInsertUpdateDelete")!=0) {
+                $log = new SQLWrapper("SYS_LogInsertUpdateDelete");
+                $log->addparam("tablename", $this->table);
+                $log->addparam("updatetype", $type);
+                $log->addparam("newid", $newid);
+                $log->addparam("wherecondition", $condition);
+                $log->insert();
+            }
         }
     }
     
